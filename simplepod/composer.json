@@ -1,0 +1,43 @@
+{
+    "name": "visualyeti/simple-pod",
+    "description": "Use the Simplecast API to populate entries",
+    "type": "craft-plugin",
+    "version": "0.1.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "simplepod"
+    ],
+    "support": {
+        "docs": "https://github.com/visualyeti/simple-pod/blob/master/README.md",
+        "issues": "https://github.com/visualyeti/simple-pod/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joe Bibby",
+            "homepage": "http://joebibby.com"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1"
+    },
+    "autoload": {
+        "psr-4": {
+          "visualyeti\\simplepod\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "SimplePod",
+        "handle": "simple-pod",
+        "hasCpSettings": true,
+        "hasCpSection": false,
+        "changelogUrl": "https://raw.githubusercontent.com/visualyeti/simple-pod/master/CHANGELOG.md",
+        "components": {
+            "crawlAPIService": "visualyeti\\simplepod\\services\\CrawlAPIService"
+        },
+        "class": "visualyeti\\simplepod\\SimplePod"
+    }
+}
