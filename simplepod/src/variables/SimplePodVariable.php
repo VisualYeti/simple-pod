@@ -45,12 +45,18 @@ class SimplePodVariable
      * @param null $optional
      * @return string
      */
-    public function exampleVariable($optional = null)
+    public function episodeDetails($episodeId)
     {
-        $result = "And away we go to the Twig template...";
-        if ($optional) {
-            $result = "I'm feeling optional today...";
-        }
-        return $result;
+		$episodeData = SimplePod::$plugin->crawlAPI->get_episode_data($episodeId);
+        return $episodeData;
     }
+    
+    public function episodes()
+    {
+		$episodesData = SimplePod::$plugin->crawlAPI->get_episodes_data();
+        return $episodesData;
+    }
+    
+
+
 }

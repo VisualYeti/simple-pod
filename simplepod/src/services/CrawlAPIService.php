@@ -30,6 +30,15 @@ use craft\base\Component;
  */
 class CrawlAPIService extends Component
 {
+	protected $allowAnonymous = ['crawlAPI'];
+
+	private $scApiRoot;
+	private $scPodcasts;
+	private $scEpisodes;
+	private $scPlayer;
+	private $scApiKey;
+	private $scApiStr;
+	private $podcastId;
     // Public Methods
     // =========================================================================
 
@@ -43,6 +52,16 @@ class CrawlAPIService extends Component
      *
      * @return mixed
      */
+     
+    public function init()
+    {
+	    $this->scApiRoot = 'https://api.simplecast.com/v1';
+		$this->scPodcasts = '/podcasts.json';
+		$this->scEpisodes = '/episodes.json';
+// 		$this->scPlayer = '/embed.json';
+		$this->scApiStr = '?api_key=' . SimplePod::getInstance()->getSettings()->apiKey;
+		$this->podcastId = $this->get_podcast_id();
+	}
     public function exampleService()
     {
         $result = 'something';
@@ -52,4 +71,34 @@ class CrawlAPIService extends Component
 
         return $result;
     }
+    
+	private function get_data($url) {
+		$ch = curl_init();
+		$timeout = 5;
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+		$data = curl_exec($ch);
+		// print $data;
+		curl_close($ch);
+		return json_decode($data);
+	}
+	
+	public function get_podcast_id(): string {
+		$podcastsUrl = $this->scApiRoot . $this->scPodcasts . $this->scApiStr;
+		$podcastsData = $this->get_data($podcastsUrl);
+		return $podcastsData[0]->{"id"};
+	}
+    
+    public function get_episodes_data(): array {
+		$episodesUrl = $this->scApiRoot . '/podcasts/' . $this->podcastId . $this->scEpisodes . $this->scApiStr;
+		$episodesData = $this->get_data($episodesUrl);
+		return $episodesData;
+	}
+	
+	public function get_episode_data($episodeId): object {
+		$episodeUrl = $this->scApiRoot . '/podcasts/' . $this->podcastId . '/episodes/' . $episodeId . $this->scApiStr;
+		$episodeData = $this->get_data($episodeUrl);
+		return $episodeData;
+	}
 }

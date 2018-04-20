@@ -84,6 +84,9 @@ class SimplePod extends Plugin
         parent::init();
         self::$plugin = $this;
 
+		$this->setComponents([
+			'crawlAPI' => CrawlAPIServiceService::class
+		]);
         // Register our site routes
         Event::on(
             UrlManager::class,

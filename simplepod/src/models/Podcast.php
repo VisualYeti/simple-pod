@@ -10,7 +10,7 @@
 
 namespace visualyeti\simplepod\models;
 
-use visualyeti\simplepod\SimplePod;
+use visualyeti\simplepod\Podcast;
 
 use Craft;
 use craft\base\Model;
@@ -27,11 +27,25 @@ use craft\base\Model;
  * @package   SimplePod
  * @since     0.1.0
  */
-class SimplePod extends Model
+class Podcast extends Model
 {
     // Public Properties
     // =========================================================================
-
+    public $id;
+    public $title;
+    public $rss_url;
+    public $description;
+    public $author;
+    public $copyright;
+    public $keywords;
+    public $subdomain;
+    public $categories;
+    public $itunes_url;
+    public $language;
+    public $website;
+    public $twitter;
+    public $explicit;
+    public $images;
     
     /**
      * Some model attribute
@@ -39,7 +53,6 @@ class SimplePod extends Model
      * @var string
      */
 
-	
     // Public Methods
     // =========================================================================
 
