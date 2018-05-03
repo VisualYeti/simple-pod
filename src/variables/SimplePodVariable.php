@@ -45,6 +45,12 @@ class SimplePodVariable
      * @param null $optional
      * @return string
      */
+    public function podcastMetaData()
+    {
+		$podcastMetaData = SimplePod::$plugin->crawlAPI->get_podcast_metadata();
+        return $podcastMetaData;
+    }
+    
     public function episodeDetails($episodeId)
     {
 		$episodeData = SimplePod::$plugin->crawlAPI->get_episode_data($episodeId);
@@ -54,8 +60,14 @@ class SimplePodVariable
     public function episodes()
     {
 		$episodesData = SimplePod::$plugin->crawlAPI->get_episodes_data();
-        return $episodesData;
+		for ($x = 0; $x <= 5; $x++) {
+			$episodesDataSmall[$x] = $episodesData[$x];
+		}
+
+        return $episodesDataSmall;
     }
+    
+    
     
 
 

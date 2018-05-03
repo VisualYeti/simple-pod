@@ -11,7 +11,7 @@
 namespace visualyeti\simplepod\services;
 
 use visualyeti\simplepod\SimplePod;
-
+use visualyeti\simplepod\SimplePod\models\Episode;
 use Craft;
 use craft\base\Component;
 
@@ -30,14 +30,13 @@ use craft\base\Component;
  */
 class CrawlAPIService extends Component
 {
-	protected $allowAnonymous = ['crawlAPI'];
-
 	private $scApiRoot;
 	private $scPodcasts;
 	private $scEpisodes;
 	private $scPlayer;
 	private $scApiKey;
 	private $scApiStr;
+	private $scEmbedUrl;
 	private $podcastId;
     // Public Methods
     // =========================================================================
@@ -59,19 +58,11 @@ class CrawlAPIService extends Component
 		$this->scPodcasts = '/podcasts.json';
 		$this->scEpisodes = '/episodes.json';
 // 		$this->scPlayer = '/embed.json';
+		$this->scEmbedUrl = 'https://embed.simplecast.com/';
 		$this->scApiStr = '?api_key=' . SimplePod::getInstance()->getSettings()->apiKey;
 		$this->podcastId = $this->get_podcast_id();
 	}
-    public function exampleService()
-    {
-        $result = 'something';
-        // Check our Plugin's settings for `someAttribute`
-        if (SimplePod::$plugin->getSettings()->someAttribute) {
-        }
 
-        return $result;
-    }
-    
 	private function get_data($url) {
 		$ch = curl_init();
 		$timeout = 5;
@@ -83,22 +74,36 @@ class CrawlAPIService extends Component
 		curl_close($ch);
 		return json_decode($data);
 	}
-	
+
 	public function get_podcast_id(): string {
 		$podcastsUrl = $this->scApiRoot . $this->scPodcasts . $this->scApiStr;
 		$podcastsData = $this->get_data($podcastsUrl);
 		return $podcastsData[0]->{"id"};
 	}
-    
-    public function get_episodes_data(): array {
+
+	public function get_podcast_metadata() {
+		$podcastsUrl = $this->scApiRoot . $this->scPodcasts . $this->scApiStr;
+		$podcastsData = $this->get_data($podcastsUrl);
+		return $podcastsData[0];
+	}
+
+	public function get_episodes_data(): array {
 		$episodesUrl = $this->scApiRoot . '/podcasts/' . $this->podcastId . $this->scEpisodes . $this->scApiStr;
 		$episodesData = $this->get_data($episodesUrl);
+		
+// 		foreach ($episodesData as $entry) {
+// 			$episode =  Episode::model();
+// 			$episode{'embed_Url'} = $this->scEmbedUrl;	
+// 			echo ($episode->{'published_at'});
+// 		}
 		return $episodesData;
 	}
-	
-	public function get_episode_data($episodeId): object {
+
+	public function get_episode_data($episodeId) {
 		$episodeUrl = $this->scApiRoot . '/podcasts/' . $this->podcastId . '/episodes/' . $episodeId . $this->scApiStr;
 		$episodeData = $this->get_data($episodeUrl);
+		$publishedDate = date( "F jS, Y", strtotime($episodeData->{"published_at"}));
+		$episodeData->{"published_at"} = $publishedDate;
 		return $episodeData;
 	}
 }

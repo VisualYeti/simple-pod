@@ -71,7 +71,7 @@ class Episode extends Model
     public function rules()
     {
         return [
-            ['someAttribute', 'string'],
+            [['id', 'number', 'podcast_id', 'guid', 'title', 'passkey'], 'required'],
             ['someAttribute', 'default', 'value' => 'Some Default'],
         ];
     }

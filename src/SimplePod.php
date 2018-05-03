@@ -13,6 +13,7 @@ namespace visualyeti\simplepod;
 use visualyeti\simplepod\services\CrawlAPIService as CrawlAPIServiceService;
 use visualyeti\simplepod\variables\SimplePodVariable;
 use visualyeti\simplepod\models\Settings;
+// use visualyeti\simplepod\models\Episode;
 
 use Craft;
 use craft\base\Plugin;

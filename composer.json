@@ -2,7 +2,7 @@
     "name": "visualyeti/simple-pod",
     "description": "Use the Simplecast API to populate a podcast page with twig",
     "type": "craft-plugin",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "keywords": [
         "craft",
         "cms",
