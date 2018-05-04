@@ -57,6 +57,17 @@ class SimplePodVariable
         return $episodeData;
     }
     
+    public function episodeSet($count)
+    {
+	   	$episodesData = SimplePod::$plugin->crawlAPI->get_episodes_data();
+		for ($x = 0; $x < $count; $x++) {
+			$episodesDataSet[$x] = $episodesData[$x];
+		}
+
+        return $episodesDataSet; 
+    }
+
+    
     public function episodes()
     {
 		$episodesData = SimplePod::$plugin->crawlAPI->get_episodes_data();
